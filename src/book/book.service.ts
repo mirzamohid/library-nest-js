@@ -43,7 +43,7 @@ export class BookService {
   }
 
   async findById(id: string): Promise<Book> {
-    const isValidId = mongoose.isValidObjectId(id)
+    const isValidId = mongoose.isValidObjectId(id);
 
     if (!isValidId) {
       throw new BadRequestException('Please enter correct id.');
@@ -59,13 +59,31 @@ export class BookService {
   }
 
   async updateById(id: string, book: Book): Promise<Book> {
-    return await this.bookModel.findByIdAndUpdate(id, book, {
+    const isValidId = mongoose.isValidObjectId(id);
+
+    if (!isValidId) {
+      throw new BadRequestException('Please enter correct id.');
+    }
+
+    const updatedBook = await this.bookModel.findByIdAndUpdate(id, book, {
       new: true,
       runValidators: true,
     });
+
+    if (!updatedBook) {
+      throw new NotFoundException('Book not found.');
+    }
+
+    return updatedBook;
   }
 
   async deleteById(id: string): Promise<Book> {
-    return await this.bookModel.findByIdAndDelete(id);
+    const deletedBook = await this.bookModel.findByIdAndDelete(id);
+
+    if (!deletedBook) {
+      throw new NotFoundException('Book not found.');
+    }
+
+    return;
   }
 }

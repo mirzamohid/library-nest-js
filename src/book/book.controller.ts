@@ -14,6 +14,7 @@ import { CreateBookDto } from './dto/create-book-dto';
 import { updateBookDto } from './dto/update-book-dto';
 
 import { Query as ExpressQuery } from 'express-serve-static-core';
+import { Public } from 'src/public/public.decorator';
 
 @Controller('books')
 export class BookController {
